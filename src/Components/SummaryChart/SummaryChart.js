@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import { LineChart, Line,Label, XAxis, YAxis, CartesianGrid, Legend, Tooltip,ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip,ResponsiveContainer } from 'recharts';
 import CustomizedTooltip from '../CustomizedTooltip/CustomizedTooltip'
-import CustomizedTick from '../CustomizedTick/CustomizesTick'
-import { withStyles } from '@material-ui/core/styles';
+
 
 const data = [
-    {name: new Date(1986,5,13), תומכים:200000,מתלבטים:150000, מתנגדים:215000,חסר:350000,פעילים: 146000},
+    {name: new Date(1986,5,13), תומכים:200000,מתלבטים:150000, מתנגדים:215000,חסר:350000,פעילים: 146000, date:new Date(1986,5,13)},
     {name:new Date(1986,5,14), תומכים:250000,מתלבטים:185000, מתנגדים:212000,חסר:330400,פעילים: 144200},
     {name:new Date(1986,5,15), תומכים:140000,מתלבטים:285500, מתנגדים:115000,חסר:325000,פעילים: 136000},
     {name:new Date(1986,5,16), תומכים:120000,מתלבטים:160000, מתנגדים:115600,חסר:250000,פעילים: 237000},
@@ -101,8 +100,15 @@ class SummaryChart extends Component {
                 <LineChart  data={data}
                         margin={{ top: 15, right: 0, left: 20, bottom: 15 }}>
                         <CartesianGrid  vertical={false}/>
-                        <XAxis dataKey="name" tickMargin={10} tickLine={false} axisLine={false} padding={{left:100, right:100}}>
-                        </XAxis>
+                        <XAxis 
+                         dataKey="name"
+                         interval={0} 
+                         tickMargin={10} 
+                         tickLine={false}
+                         axisLine={false}  
+                         padding={{left:100, right:100}}
+                         
+                         />
                         <YAxis tickLine={false} axisLine={false} />
                         <Tooltip content={<CustomizedTooltip data={data} />}/>
                         <Legend verticalAlign="top" align="left" wrapperStyle={{top:"-8px"}}/>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import zIndex from '../../../node_modules/@material-ui/core/styles/zIndex';
+
 
 const styles = {
     TooltipWrapper: {
@@ -60,7 +60,7 @@ class CustomizedTooltip extends Component {
 
     render(){
         let displayData = this.state.displayData
-        let label = this.props.label
+     
 
         return(
             <div style={styles.TooltipWrapper}>

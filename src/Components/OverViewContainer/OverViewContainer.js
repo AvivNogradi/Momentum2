@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const styles = {
@@ -43,11 +41,11 @@ class OverViewContainer extends Component {
 
         let percentage = 0;
 
-        if( (parseInt(this.props.changes) % parseInt(this.props.numbers)) !== 0  ){
-             percentage = ((parseInt(this.props.changes))/(parseInt(this.props.numbers))*100).toFixed(1)
+        if( (parseInt(this.props.changes,10) % parseInt(this.props.numbers,10)) !== 0  ){
+             percentage = ((parseInt(this.props.changes,10))/(parseInt(this.props.numbers,10))*100).toFixed(1)
         }
         else{
-             percentage = (parseInt(this.props.changes)/parseInt(this.props.numbers))*100
+             percentage = (parseInt(this.props.changes,10)/parseInt(this.props.numbers,10))*100
         }
         
         return (

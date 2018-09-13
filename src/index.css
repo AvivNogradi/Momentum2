@@ -31,3 +31,7 @@ main{
 .recharts-responsive-container.recharts-wrapper.recharts-surface.recharts-legend-wrapper{
   top:-2 !important
 }
+.recharts-layer .recharts-cartesian-axis-tick{
+  width: 80%;
+  color:'red' !important;
+}
