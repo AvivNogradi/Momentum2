@@ -43,6 +43,7 @@ class FilterBar extends Component {
 
         this.state = {
            displayedCities:[],
+           displayedAreaCities:[],
            filteredCities:[],
            displayedAreas:[],
            rawCitySearch:'',
@@ -126,6 +127,17 @@ displayInitialCities(filteredArr){
         if(value && value.name){
 
           this.setState({ areaFilter:value.name, selectedArea:value});
+          let displayedAreaCities = rawCities.filter(city => {
+            if(value.name === 'הכל'){
+              return true;
+            }
+            else{
+              return city.areaName === value.name
+            }
+           
+          });
+          this.setState({displayedCities: displayedAreaCities,displayedAreaCities: displayedAreaCities})
+          this.displayInitialCities(displayedAreaCities)
         }
         // else (value){
         //   this.setState({ areaFilter:value, selectedArea:value});
@@ -164,7 +176,17 @@ displayInitialCities(filteredArr){
       let end = endDropDownCount;
        let nextTenCities = this.state.displayedCities
        for(let i= initial; i < end; i++){
-           nextTenCities.push(this.state.filteredCities[i])
+         if(this.state.rawSearch !== ''){
+          nextTenCities.push(this.state.displayedCities[i])
+
+         }
+         if(this.state.selectedArea.name !== 'הכל' && this.state.rawSearch === ''){
+          nextTenCities.push(this.state.displayedAreaCities[i])
+         }
+         else{
+          nextTenCities.push(this.state.filteredCities[i])
+         }
+           
        }
         this.setState({displayedCities:nextTenCities})
         initialDropDownCount += 10;
@@ -399,8 +421,6 @@ displayInitialCities(filteredArr){
                         :
                         null
                       }
-                     
-                    
                       {dropDownAreas}
                       <Divider />
                       {dropDownCities}
