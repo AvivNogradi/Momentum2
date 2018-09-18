@@ -8,6 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
+import DropDownAreas from '../DropDownAreas/DropDownAreas'
+import DropDownCities from '../DropDownCities/DropDownCities'
 
 const rawCities = require('../../Assets/cities.json');
 const rawAreas = require('../../Assets/areas.json');
@@ -40,7 +42,7 @@ const styles = {
 class FilterBar extends Component {
     constructor(props){
         super(props)
-
+        this.searchedValue = '';
         this.state = {
            displayedCities:[],
            displayedAreaCities:[],
@@ -51,6 +53,8 @@ class FilterBar extends Component {
              _id:0,
              name:'הכל',
            },
+           cityChosen:{},
+           selectedCity:'',
            rawSearch:'',
            initial : 10,
            end : 20,
@@ -87,16 +91,7 @@ displayInitialCities(filteredArr){
         e.preventDefault();
         e.stopPropagation();
         if((e.target.parentElement.parentElement.classList)[4] === 'mainDropdaownButton') return;
-      //   console.log("got to main close")
-      //  if(value){
-
-      //     this.setState({mainFilter:value})
-      //     if (this.mainAnchorEl.contains(event.target)) {
-      //       return;
-      //     }
-      //   }
-      //    this.handleMainToggle();
-      // if(e.path.indexOf('mainDropdaownButton') > 1) return;
+    
       if(value){
         this.setState({ mainFilter:value});
       }
@@ -111,39 +106,32 @@ displayInitialCities(filteredArr){
         this.setState({ areaOpen: !this.state.areaOpen });
       };
     
-      handleAreaClose = (event,value) => {
-    
-        event.preventDefault();
-        event.stopPropagation();
+      handleAreaClose = (e,areaFilter,selectedArea,displayedAreaCities) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-        // if(value){
-        //   this.setState({areaFilter:value})
-        //   if (this.areaAnchorEl.contains(event.target)) {
-        //     return;
-        //   }
-        // }
-     
-        if((event.target.parentElement.parentElement.classList)[4] === 'areaDropdaownButton') return;
-        if(value && value.name){
-
-          this.setState({ areaFilter:value.name, selectedArea:value});
-          let displayedAreaCities = rawCities.filter(city => {
-            if(value.name === 'הכל'){
-              return true;
-            }
-            else{
-              return city.areaName === value.name
-            }
-           
-          });
-          this.setState({displayedCities: displayedAreaCities,displayedAreaCities: displayedAreaCities})
-          this.displayInitialCities(displayedAreaCities)
+        if(areaFilter){
+          this.setState({areaFilter:areaFilter,selectedArea:selectedArea})
         }
-        // else (value){
-        //   this.setState({ areaFilter:value, selectedArea:value});
-        // }
+      
+     
+        if((e.target.parentElement.parentElement.classList)[4] === 'areaDropdaownButton') return;
+         if(displayedAreaCities){
+
+          this.setState({displayedCities: displayedAreaCities,displayedAreaCities: displayedAreaCities,filteredCities:displayedAreaCities})
+          this.displayInitialCities(displayedAreaCities)
+         }
+      
         this.setState({ areaOpen: false });
       };
+
+      handleAreaCloseAfterChooseAll = (e,object) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({areaFilter: object.name,selectedArea: object,displayedCities:rawCities,rawSearch:'',filteredCities:rawCities})
+        this.setState({ areaOpen: false });
+        this.displayInitialCities(rawCities)
+      }
 
       handleTimeToggle = (e) => {
         e.preventDefault();
@@ -177,16 +165,16 @@ displayInitialCities(filteredArr){
        let nextTenCities = this.state.displayedCities
        for(let i= initial; i < end; i++){
          if(this.state.rawSearch !== ''){
-          nextTenCities.push(this.state.displayedCities[i])
+          nextTenCities.push(this.state.filteredCities[i])
 
          }
-         if(this.state.selectedArea.name !== 'הכל' && this.state.rawSearch === ''){
+       else if(this.state.selectedArea.name !== 'הכל' && this.state.rawSearch === ''){
           nextTenCities.push(this.state.displayedAreaCities[i])
-         }
+       }
          else{
-          nextTenCities.push(this.state.filteredCities[i])
+          nextTenCities.push(rawCities[i])
          }
-           
+          
        }
         this.setState({displayedCities:nextTenCities})
         initialDropDownCount += 10;
@@ -202,77 +190,85 @@ displayInitialCities(filteredArr){
       }
      }
 
-     onChangeInput = (event) => {
+    //  onChangeInput = (event) => {
      
-      this.setState({rawSearch: event.target.value})
+    //   this.setState({rawSearch: event.target.value})
 
-      let searchedCity = event.target.value
+    //   let searchedCity = event.target.value
 
-      var filteredCities = rawCities
-      var displayedCities = filteredCities.filter(element => {
+    //   var filteredCities = rawCities
+    //   var displayedCities = filteredCities.filter(element => {
      
-             let regex = new RegExp(searchedCity)
-              if(regex.test(element && element.name) &&  (element.areaName === this.state.selectedArea.name || this.state.selectedArea.name === 'הכל') ){
-                  return true
-              }
-          else{
-            return false;  
-          }
+    //          let regex = new RegExp(searchedCity)
+    //           if(regex.test(element && element.name) &&  (element.areaName === this.state.selectedArea.name || this.state.selectedArea.name === 'הכל') ){
+    //               return true
+    //           }
+    //       else{
+    //         return false;  
+    //       }
                
-      })
+    //   })
   
-         if(displayedCities.length !== 0){
+    //      if(displayedCities.length !== 0){
            
-          this.setState({ displayedCities:displayedCities, filteredCities:displayedCities, displayedAreas:[]})
-          this.displayInitialCities(displayedCities)
-         }
+    //       this.setState({ displayedCities:displayedCities, filteredCities:displayedCities, displayedAreas:[]})
+    //       this.displayInitialCities(displayedCities)
+    //      }
         
-        //  else{
-        //   this.displayInitialCities(rawCities);
-        //   this.setState({displayedAreas:rawAreas})
-        //  }
+    //     //  else{
+    //     //   this.displayInitialCities(rawCities);
+    //     //   this.setState({displayedAreas:rawAreas})
+    //     //  }
+    //   }
+
+      handleCityChosen(city){
+       
+        this.setState({areaFilter:city.name,cityChosen:city})
+        this.setState({areaOpen:false})
       }
 
+      displayFilteredCities(displayedCities){
+        this.setState({displayedCities:displayedCities,filteredCities:displayedCities})
+      }
    
     render(){
-      
-       let displayedCities = this.state.displayedCities
-     let dropDownCities = displayedCities.map(el => {
-       if(el && el._id){
-        return <MenuItem key={el._id} onClick={(e) =>  this.handleAreaClose(e,el)} style={{color:'#757575',paddingRight:'5px'}}>
-        { this.state.areaFilter === el.name ?
-        <i className="material-icons" style={{color:'#399fd0',marginLeft:'5px'}}>
-          check
-          </i>
-          :
-          <span style={{width:'30px'}}></span>
-         }
-      {el.name}
-      </MenuItem>
-       }
+  //      let displayedCities = this.state.displayedCities
+  //    let dropDownCities = displayedCities.map(el => {
+  //      if(el && el._id){
+  //       return <MenuItem key={el._id} onClick={(e) =>  this.handleAreaClose(e,el)} style={{color:'#757575',paddingRight:'5px'}}>
+  //       { this.state.areaFilter === el.name ?
+  //       <i className="material-icons" style={{color:'#399fd0',marginLeft:'5px'}}>
+  //         check
+  //         </i>
+  //         :
+  //         <span style={{width:'30px'}}></span>
+  //        }
+  //     {el.name}
+  //     </MenuItem>
+  //      }
         
-      });
+  //     });
 
   
-    let dropDownAreas = [];
+  //   let dropDownAreas = [];
     
-   if(this.state.rawSearch === '') {
+  //  if(this.state.rawSearch === '') {
 
-     dropDownAreas = rawAreas.map(el => {
-      if(el && el._id){
-        return  <MenuItem key={el._id} onClick={(e) =>  this.handleAreaClose(e,el)} style={{color:'#757575',paddingRight:'5px'}}>
-        { this.state.areaFilter === el.name ?
-          <i className="material-icons" style={{color:'#399fd0',marginLeft:'5px'}}>
-            check
-            </i>
-            :
-            <span style={{width:'30px'}}></span>
-          }
-        {el.name}
-        </MenuItem>
-      }
-   });
-  }
+  //    dropDownAreas = rawAreas.map(el => {
+  //     if(el && el._id){
+  //       return  <MenuItem key={el._id} onClick={(e) =>  this.handleAreaClose(e,el)} style={{color:'#757575',paddingRight:'5px'}}>
+  //       { this.state.areaFilter === el.name ?
+  //         <i className="material-icons" style={{color:'#399fd0',marginLeft:'5px'}}>
+  //           check
+  //           </i>
+  //           :
+  //           <span style={{width:'30px'}}></span>
+  //         }
+  //       {el.name}
+  //       </MenuItem>
+  //     }
+  //  });
+  // }
   
      
   
@@ -387,14 +383,14 @@ displayInitialCities(filteredArr){
                   <ClickAwayListener onClickAway={this.handleAreaClose}>
                     <MenuList style={{display:'flex',flexDirection:'column',justifyContent:'flex-end',paddingTop:0}}>
                     <TextField
-                       onChange={(event) => {this.setState({rawCitySearch: event.target.value}), this.onChangeInput(event)}}
+                       onChange={(event) => {this.searchedValue = event.target.value;this.setState({rawSearch: event.target.value})}}
                          style={{paddingTop:0,marginTop:0}}
                           id="search"
                           placeholder="חיפוש"
                           type="search"
                           InputProps={{
                           disableUnderline: true,
-                          style: { marginRight: '12px'}
+                          style: { marginRight: '12px',paddingLeft:'10px', paddingTop:'10px'}
                        }}
                        InputLabelProps={{
                         style: {display:'flex',justifyContent:'flex-start',width:'100%', margin:'0 -12px'}
@@ -404,11 +400,8 @@ displayInitialCities(filteredArr){
                       
                       />
                       <Divider />
-                      {
-                     
-                        (this.state.rawSearch === '' && this.state.areaFilter !== 'הכל')?
-                        
-                        <MenuItem onClick={(e) =>  this.handleAreaClose(e,{name:"הכל",_id:0} )} style={{color:'#757575',paddingRight:'5px'}}>
+                      
+                        <MenuItem onClick={(e) =>  this.handleAreaCloseAfterChooseAll(e,{name:"הכל",_id:0} )} style={{color:'#757575',paddingRight:'5px'}}>
                         { this.state.areaFilter === 'הכל' ?
                           <i className="material-icons" style={{color:'#399fd0',marginLeft:'5px'}}>
                             check
@@ -418,12 +411,24 @@ displayInitialCities(filteredArr){
                           }
                         הכל
                         </MenuItem>
-                        :
-                        null
+                        
                       }
-                      {dropDownAreas}
+                      <DropDownAreas 
+                      cityChosen={this.state.cityChosen}
+                      areaFilter={this.state.areaFilter} 
+                      rawSearch={this.state.rawSearch} 
+                      handleAreaClose={(e,areaFilter,selectedArea,displayedAreaCities) => this.handleAreaClose(e,areaFilter,selectedArea,displayedAreaCities)}
+                      />
                       <Divider />
-                      {dropDownCities}
+                      <DropDownCities 
+                      handleCityChosen={(city) => this.handleCityChosen(city)} 
+                      citySelected={this.state.cityChosen.name}
+                      rawSearch={this.searchedValue} 
+                      handleAreaClose={(e,el) => this.handleAreaClose(e,el)}
+                      displayedCities={this.state.displayedCities}
+                      displayFilteredCities={(displayedCities)=> this.displayFilteredCities(displayedCities)}
+                      displayInitialCities={(displayedCities) => this.displayInitialCities(displayedCities)}
+                      selectedArea={this.state.selectedArea}/>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

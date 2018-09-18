@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import FilterBar from '../FilterBar/FilterBar'
 import OverViewContainer from '../OverViewContainer/OverViewContainer'
 import SummaryChart from '../SummaryChart/SummaryChart'
+import GeoTable from '../GeoTable/GeoTable'
 
 const styles = {
     AppContainer: {
@@ -12,7 +13,7 @@ const styles = {
     },
     ContentContainer: {
         backgroundColor: '#f2f2f2',
-        height:'100%',
+       
     },
     OverViewContainersContainer: {
         display: 'flex',
@@ -40,9 +41,12 @@ class Dashboard extends Component {
     render(){
         return(
             <div style={styles.AppContainer}>
+            <div style={{background:'white'}}>
             <div style={styles.FilterBar}>
             <FilterBar />
             </div>
+            </div>
+            
               <div style={styles.ContentContainer}>
                 <div style={styles.OverViewContainersContainer}>
                 <OverViewContainer
@@ -77,6 +81,7 @@ class Dashboard extends Component {
                 />
                 </div>
                   <SummaryChart />
+                  <GeoTable />
                 </div>
 
             </div>
