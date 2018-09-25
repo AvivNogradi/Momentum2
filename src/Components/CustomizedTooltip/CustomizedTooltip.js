@@ -50,7 +50,7 @@ class CustomizedTooltip extends Component {
         let label = this.props.label
         if(label !== ''){
             let newData = this.props.data.filter(el =>{
-                return el.name === this.props.label
+                return el.date === this.props.label
             })
             this.setState({displayData: newData})
         }

@@ -277,8 +277,11 @@ displayInitialCities(filteredArr){
         const { timeOpen } = this.state;
 
         return(
-         <div style={styles.container}> 
-         <div style={{display:'flex', justifyContent:'flex-end',width:'35%'}}>
+          
+         
+         
+         <div className="dropDownsWrapper" style={styles.container}> 
+         <div style={{display:'flex', justifyContent:'flex-end'}}>
          <div style={styles.dropDown}>
              <Button
          buttonRef={node => {
@@ -289,10 +292,15 @@ displayInitialCities(filteredArr){
          onClick={this.handleTimeToggle}
          className='timeDropdaownButton'
        >
+       <div className="timeAndIconRegularSizeScreen" style={{display:'flex'}}>
        <i className="material-icons" style={{color:'#399fd0'}}>
            keyboard_arrow_down
         </i>
-        <span style={{fontWeight: 'bold', fontSize:'initial', direction:'rtl'}}>{this.state.timeFilter}</span> 
+        <span className="dropDownTitles" style={{fontWeight: 'bold', fontSize:'initial', direction:'rtl'}}>{this.state.timeFilter}</span> 
+        </div>
+        <i className="material-icons timeTitleIconSmallScreen" style={{color:'#00ace6',display:'none'}}>
+           date_range
+        </i>
           </Button>
     
           <Popper open={timeOpen} anchorEl={this.timeAnchorEl} transition disablePortal>
@@ -367,7 +375,7 @@ displayInitialCities(filteredArr){
        <i className="material-icons" style={{color:'#399fd0'}}>
            keyboard_arrow_down
         </i>
-        <span style={{fontWeight: 'bold', fontSize:'initial'}}>{this.state.areaFilter}</span> 
+        <span className="dropDownTitles" style={{fontWeight: 'bold', fontSize:'initial'}}>{this.state.areaFilter}</span> 
           </Button>
           <span style={{color:'#757575'}}>:אזור/ישוב</span>
             
@@ -452,20 +460,20 @@ displayInitialCities(filteredArr){
        <i className="material-icons" style={{color:'#399fd0'}}>
            keyboard_arrow_down
         </i>
-        <span style={{fontWeight: 'bold', fontSize:'initial'}}>{this.state.mainFilter}</span> 
+        <span className="dropDownTitles" style={{fontWeight: 'bold', fontSize:'initial'}}>{this.state.mainFilter}</span> 
           </Button>
           <span style={{color:'#757575'}}>:דוחות</span>
             
         
         
-          <Popper open={mainOpen} anchorEl={this.mainAnchorEl} transition disablePortal>
+          <Popper open={mainOpen} anchorEl={this.mainAnchorEl} transition disablePortal style={{zIndex:200}}>
             {({ TransitionProps, placement }) => (
               <Grow
                 {...TransitionProps}
                 id="menu-list-grow"
                 style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
               >
-                <Paper style={{direction:'rtl'}}>
+                <Paper style={{direction:'rtl',zIndex:200}}>
                   <ClickAwayListener onClickAway={this.handleMainClose}>
                     <MenuList>
                         <MenuItem onClick={(e) =>  this.handleMainClose(e,"ראשי")} style={styles.menuItem}>
@@ -528,6 +536,7 @@ displayInitialCities(filteredArr){
            </div>
         </div>
          </div>
+       
         )
     }
 }

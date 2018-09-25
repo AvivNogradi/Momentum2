@@ -8,12 +8,17 @@ class CustomizedTick extends Component {
          aviv:'aviv'
         }
     }
+
+
     render(){
+    let tickData = this.props.data || [];
+    let index =  this.props.index
+    let result = `${tickData[index].day} \n ${tickData[index].date}`
+    console.log(result)
         return(
-          
-               
-               <h1>blaaaaaaaaaaaaaaaaaaaa</h1>
-          
+                   
+                  <text x={this.props.x} y={this.props.y}>{result}</text>
+                   
         )
     }
 }

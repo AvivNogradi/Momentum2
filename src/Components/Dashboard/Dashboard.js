@@ -26,7 +26,7 @@ const styles = {
     FilterBar: {
         width: '80%',
         margin: '0 auto',
-        zIndex:100,
+        zIndex:200,
     }
 }
 class Dashboard extends Component {
@@ -48,7 +48,7 @@ class Dashboard extends Component {
             </div>
             
               <div style={styles.ContentContainer}>
-                <div style={styles.OverViewContainersContainer}>
+                <div className="overViewContainersWrapper" style={styles.OverViewContainersContainer}>
                 <OverViewContainer
                 title="פעילים"
                 numbers="30500"
