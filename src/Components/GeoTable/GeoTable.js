@@ -9,17 +9,10 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TablePaginationActions from '../TablePaginationAction/TablePaginationAction'
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import {CSVLink, CSVDownload} from 'react-csv';
-import Divider from '@material-ui/core/Divider';
+import {CSVLink} from 'react-csv';
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
@@ -41,13 +34,6 @@ function createData(ישוב, אזור, מתנגדים, מתלבטים, תומכ
         paar = Math.round(paar * 100)
     }  
 
-//   let paar = (target - supporters) / target
-//   if(paar > 0){
-//       paar = 0
-//   }
-//   else{
-//       paar = Math.round(paar)
-//   }
   let פער = paar
   return { ישוב, אזור, מתנגדים, מתלבטים, תומכים, מטרה, פער};
 }
@@ -107,7 +93,7 @@ const styles = {
     root: {
         padding:'0 30px',
         height: '555px',
-       
+        width: '80%',
       },
       table: {
         minWidth: 750,
@@ -129,6 +115,14 @@ const styles = {
     },
     paginator: {
         color:'grey',
+    },
+    smallScreentableTitle:{
+        backgroundColor:'#00ace6', 
+        display:'none',  
+        width:'80%', 
+        justifyContent:'space-between',
+        alignItems:'center',
+        fontSize:'13px',
     }
 }
 
@@ -229,7 +223,7 @@ class GeoTable extends Component {
           }
       }
     render(){
-        const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, rows.length - this.state.page * this.state.rowsPerPage);
+    
         let jerusalemAreaColor = this.areaColorFiller('ירושלים')
         let telAvivAreaColor = this.areaColorFiller('תל-אביב')
         let southAreaColor = this.areaColorFiller('דרום')
@@ -246,7 +240,7 @@ class GeoTable extends Component {
 
 
             <div className="tableAndSmallScreenTitleWrapper">              
-                <div className="smallScreentableTitle" style={{backgroundColor:'#00ace6', display:'none',justifyContent:'flex-end',width:'80%',justifyContent:'space-between'}}>
+                <div className="smallScreentableTitle" style={styles.smallScreentableTitle}>
                     <div style={{display:'flex',padding:'20px',alignItems:'center'}}>
                         <div  style={{padding: '0.5em'}}>
                             <FontAwesomeIcon icon="filter" style={{color:'white'}}/>
@@ -269,7 +263,7 @@ class GeoTable extends Component {
                 </div>
                 <div style={{display:'flex',padding:'20px',alignItems:'center'}}>
                   <div  style={{borderRight: '0.1em solid grey', padding: '0.5em'}}>
-                    <img src={myFilter} style={{cursor:'pointer',display:'flex'}}/>
+                    <img src={myFilter} style={{cursor:'pointer',display:'flex'}} alt="Filter"/>
                   </div>
                   <div style={{display:'flex'}}>
                   <CSVLink data={rows}>
@@ -284,7 +278,7 @@ class GeoTable extends Component {
             </div>
             <div className="tableAndMapWrapper" style={{display:'flex'}}>
             
-    <Paper style={styles.root}>
+    <Paper className="root" style={styles.root}>
       <Table 
       style={styles.table}
       order={this.state.order}
@@ -363,7 +357,7 @@ class GeoTable extends Component {
       </Table>
     </Paper>
     <div className="map" style={{maxWidth:'200px',minWidth:'235px',overflow: 'hidden'}}>
-            <svg style={{height:'100%',left:'-950px',overflow:'visible', minHeight: '570px',height: 'fit-content'}} viewBox="0 0 850 850">
+            <svg style={{left:'-950px',overflow:'visible', minHeight: '570px',height: 'fit-content'}} viewBox="0 0 850 850">
 
 <g>
     {/* <g transform="translate(785.8541414141414,421.87497474747477) scale(1)"> */}

@@ -34,8 +34,8 @@ main{
   top:-2 !important
 }
 .recharts-layer .recharts-cartesian-axis-tick{
-  width: 80%;
-  color:'red' !important;
+  width: 100px
+  
 }
 .MuiPaper-elevation2-46{
   box-shadow: none !important;
@@ -117,6 +117,14 @@ main{
 
 .material-icons.timeTitleIconSmallScreen{
     display: flex !important;
+}
+
+.map{
+  padding-top: 20px;
+}
+
+.root{
+  width: auto !important;
 }
 
 }

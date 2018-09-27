@@ -36,6 +36,8 @@ class DropDownAreas extends Component {
             if(this.props.areaFilter === 'הכל' && this.props.rawSearch === '') return true;
 
             if(testedArea.name === this.props.areaFilter || testedArea.name === this.props.cityChosen.areaName) return true;
+
+        
         })
 
 

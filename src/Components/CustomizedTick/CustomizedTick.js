@@ -5,7 +5,7 @@ class CustomizedTick extends Component {
         super(props)
 
         this.state = {
-         aviv:'aviv'
+       
         }
     }
 
@@ -13,11 +13,10 @@ class CustomizedTick extends Component {
     render(){
     let tickData = this.props.data || [];
     let index =  this.props.index
-    let result = `${tickData[index].day} \n ${tickData[index].date}`
-    console.log(result)
-        return(
-                   
-                  <text x={this.props.x} y={this.props.y}>{result}</text>
+    let result = `${tickData[index].day} \n\n\n\n ${tickData[index].date}`
+   console.log(result)
+        return(    
+                  <text x={this.props.x} y={this.props.y}><tspan>{result}</tspan><tspan>dd</tspan></text>
                    
         )
     }

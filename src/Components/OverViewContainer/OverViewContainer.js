@@ -55,7 +55,7 @@ class OverViewContainer extends Component {
             <CardContent style={styles.content}>
                 <div>
                 <div style={styles.header}>
-                    <Typography style={styles.title}>
+                    <Typography style={{color:this.props.titleColor,fontWeight:'bold'}}>
                         {this.props.title}
                     </Typography>
                 </div>

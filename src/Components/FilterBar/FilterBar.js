@@ -29,7 +29,7 @@ const styles = {
     container: {
         display:'flex',
         width: '100%',
-      
+        alignItems:'center',
     },
     menuItem: {
       color:'#757575',

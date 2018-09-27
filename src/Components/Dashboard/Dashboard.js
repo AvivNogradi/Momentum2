@@ -54,30 +54,35 @@ class Dashboard extends Component {
                 numbers="30500"
                 changes="-150"
                 style={{borderRight:'3px solid #b366ff'}}
+                titleColor='#b366ff'
                 />
                 <OverViewContainer
                 title="תומכים"
                 numbers="301200"
                 changes="2500"
                 style={{borderRight:'3px solid #33adff'}}
+                titleColor='#33adff'
                 />
                 <OverViewContainer
                 title="מתנגדים"
                 numbers="15169"
                 changes="3600"
                 style={{borderRight:'3px solid #00cc99'}}
+                titleColor='#00cc99'
                 />
                 <OverViewContainer
                 title="מתלבטים"
                 numbers="140700"
                 changes="-2100"
                 style={{borderRight:'3px solid #ff751a'}}
+                titleColor='#ff751a'
                 />
                 <OverViewContainer
                 title="לא ידוע"
                 numbers="800500"
                 changes="6000"
                 style={{borderRight:'3px solid #ffcc00'}}
+                titleColor='#ffcc00'
                 />
                 </div>
                   <SummaryChart />

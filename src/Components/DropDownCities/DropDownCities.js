@@ -6,8 +6,8 @@ const rawAreas = require('../../Assets/areas.json');
 class DropDownCities extends Component {
     constructor(props){
         super(props)
-        this.rawSearch = '',
-        this.selectedArea = '',
+        this.rawSearch = ''
+        this.selectedArea = ''
         this.state = {
            rawSearch: '',
            dropDownCities:[],
