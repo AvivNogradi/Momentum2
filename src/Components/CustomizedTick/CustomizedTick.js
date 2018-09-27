@@ -16,7 +16,7 @@ class CustomizedTick extends Component {
     let result = `${tickData[index].day} \n\n\n\n ${tickData[index].date}`
    console.log(result)
         return(    
-                  <text x={this.props.x} y={this.props.y}><tspan>{result}</tspan><tspan>dd</tspan></text>
+                  <text x={this.props.x} y={this.props.y}><tspan>{result}</tspan><tspan></tspan></text>
                    
         )
     }

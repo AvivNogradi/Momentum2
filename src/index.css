@@ -126,6 +126,13 @@ main{
 .root{
   width: auto !important;
 }
+.MainDashboard{
+  flex-direction: column;
+}
+
+.MainDashboardContainer{
+  width: auto !important;
+}
 
 }
 @media only screen and (max-width: 430px) {

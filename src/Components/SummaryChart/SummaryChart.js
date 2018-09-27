@@ -3,19 +3,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip,Responsiv
 import CustomizedTooltip from '../CustomizedTooltip/CustomizedTooltip'
 import CustomizedTick from '../CustomizedTick/CustomizedTick'
 
-
-const data = [
-    {date: new Date(1986,5,13), תומכים:200000,מתלבטים:150000, מתנגדים:215000,חסר:350000,פעילים: 146000, day:''},
-    {date:new Date(1986,5,14), תומכים:250000,מתלבטים:185000, מתנגדים:212000,חסר:330400,פעילים: 144200, day:''},
-    {date:new Date(1986,5,15), תומכים:140000,מתלבטים:285500, מתנגדים:115000,חסר:325000,פעילים: 136000, day:''},
-    {date:new Date(1986,5,16), תומכים:120000,מתלבטים:160000, מתנגדים:115600,חסר:250000,פעילים: 237000, day:''},
-    {date:new Date(1986,5,17), תומכים:200000,מתלבטים:187000, מתנגדים:117000,חסר:330000,פעילים: 141000, day:''},
-    {date:new Date(1986,5,18), תומכים:250000,מתלבטים:120000, מתנגדים:190100,חסר:335000,פעילים: 252000, day:''},
-    {date:new Date(1986,5,19), תומכים:256000,מתלבטים:145000, מתנגדים:114000,חסר:370000,פעילים: 137000, day:''},
-
-];
-
-let tempData = data
+import apiData from '../../Assets/apiData.json'
+const fs = require('fs');
 
 const daysOfWeek = {
     0: 'יום ראשון',
@@ -57,8 +46,20 @@ class SummaryChart extends Component {
         super(props)
 
         this.state = {
-
+            apiData: [],
+            revisedDateAndDay:[],
         }
+    }
+
+    componentWillMount(){
+
+        //mock api data
+        setTimeout(() => {
+          //  let FileContentArray= this.getJSONFileContent(__dirname +"apiData.json");
+            
+             this.setState({apiData:apiData})
+        }, 3000);
+
     }
 
     getDateFormat(date){
@@ -84,35 +85,43 @@ class SummaryChart extends Component {
     }
 
     setDateAndDay(){
-       
-        for(let i = 0; i < tempData.length; i++){
-            data[i].day = this.getDayFromDate(tempData[i].date)
-        }
 
-        let newData = data.forEach(el => {
-        
-            el.date = this.getDateFormat(el.date)
+        let alteredArray = this.state.apiData
+
+        alteredArray.map(item=>{
+            let revisedDate = parseInt(item.date)
+           // let revisedDate = item.date.replace('"','')
+            let tempDate = new Date(revisedDate)
+            item.day = this.getDayFromDate(tempDate)
+            item.date = this.getDateFormat(tempDate)
+            item.תומכים = parseInt(item.תומכים)
+            item.מתנגדים = parseInt(item.מתנגדים)
+            item.פעילים = parseInt(item.פעילים)
+            item.חסר = parseInt(item.חסר)
+            item.מתלבטים = parseInt(item.מתלבטים)
+            return item;
         })
 
-        this.data = newData
+     return alteredArray
     }
+
+
+  //simple json file reading function
+  
+//   getJSONFileContent(filepath) {
+//     console.time("read JSON")
+//     let jsonOfFile = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+  
+//     console.timeEnd("read JSON");
+//     console.log("entries in ", filepath, " file: ", jsonOfFile.length)
+//     return jsonOfFile
+//   }
     
 
     render(){
-       
-        this.setDateAndDay();
 
-        // let lines =  data.map(el => {
-        //     console.log(el.dataKey)})
-        //     if(el.dataKey === 'חסר'){
-        //         return  <Line type="monotone" dataKey='לא ידוע' stroke={el.stroke} />
-        //     }
-        //     else{
-        //         return  <Line type="monotone" dataKey={el.dataKey} stroke={el.dataKey.stroke} />
-        //     }
-            
-        // });
-
+      let altered = this.setDateAndDay();
+      console.log("altered in render",altered)
         return(
 
           <div className="chartAndSmallScreenTitleWrapper">
@@ -125,19 +134,19 @@ class SummaryChart extends Component {
                 </div>
             
                 <ResponsiveContainer minWidth={950} height="90%" style={{paddingTop:"10px"}}>
-                    <LineChart  data={data}
+                    <LineChart  data={altered}
                             margin={{ top: 15, right: 0, left: 20, bottom: 15 }}>
                             <CartesianGrid  vertical={false}/>
                             <XAxis
                             dataKey="date"
-                            tick={<CustomizedTick data={data} daysOfWeek={daysOfWeek}/>}
+                            tick={<CustomizedTick data={altered} daysOfWeek={daysOfWeek}/>}
                             tickMargin={20} 
                             tickLine={false}
                             axisLine={false}  
                             padding={{left:0, right:130}}
                             />
                             <YAxis tickLine={false} axisLine={false} />
-                            <Tooltip content={<CustomizedTooltip data={data} style={{width:'30px',color:'red',backgroundColor:'red'}}/>}/>
+                            <Tooltip content={<CustomizedTooltip data={altered} style={{width:'30px',color:'red',backgroundColor:'red'}}/>}/>
                             <Legend verticalAlign="top" align="left" wrapperStyle={{top:"-8px"}}/>
                             <Line type="monotone" dataKey="תומכים" stroke="#33adff" />
                             <Line type="monotone" dataKey="מתלבטים" stroke="#ff751a" />
