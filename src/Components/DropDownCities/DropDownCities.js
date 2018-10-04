@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import MenuItem from '@material-ui/core/MenuItem';
 
 const rawCities = require('../../Assets/cities.json');
-const rawAreas = require('../../Assets/areas.json');
 class DropDownCities extends Component {
     constructor(props){
         super(props)
@@ -32,7 +31,7 @@ class DropDownCities extends Component {
     }
     onChangeInput = () => {
         let searchedCity = this.rawSearch
-        let searchedCityArray = searchedCity.split('')
+       // let searchedCityArray = searchedCity.split('')
 
         var displayedCities = rawCities.filter(element => {
             
@@ -73,7 +72,7 @@ class DropDownCities extends Component {
          {el.name}
          </MenuItem>
           }
-           
+           return null
          });
 
         return(

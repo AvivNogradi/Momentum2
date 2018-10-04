@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import DropDownAreas from '../DropDownAreas/DropDownAreas'
 import DropDownCities from '../DropDownCities/DropDownCities'
+import axios from 'axios';
 
 const rawCities = require('../../Assets/cities.json');
 const rawAreas = require('../../Assets/areas.json');
@@ -71,7 +72,7 @@ class FilterBar extends Component {
 componentWillMount(){
   this.displayInitialCities(rawCities);
   this.setState({filteredCities:rawCities,displayedAreas:rawAreas})
-  
+  this.changeFilterTitle()
 }
 
 displayInitialCities(filteredArr){
@@ -94,9 +95,28 @@ displayInitialCities(filteredArr){
     
       if(value){
         this.setState({ mainFilter:value});
+        switch(value){
+          case "ראשי":
+          this.props.dashBoardSelected("main")
+          break;
+          case "בוחרים":
+          this.props.dashBoardSelected("voters")
+          break;
+          case "פעילים":
+          this.props.dashBoardSelected("activists")
+          break;
+          case "אירועים":
+          this.props.dashBoardSelected("events")
+          break;
+          case "משתמשים":
+          this.props.dashBoardSelected("users")
+          break;
+          default:
+          this.props.dashBoardSelected("main")
+        }
+        
       }
       this.setState({ mainOpen: false});
-        
       };
 
       handleAreaToggle = (e) => {
@@ -111,8 +131,23 @@ displayInitialCities(filteredArr){
         e.stopPropagation();
 
         if(areaFilter){
+          let timeFilter = this.state.timeFilter
           this.setState({areaFilter:areaFilter,selectedArea:selectedArea})
+     
+      axios({
+        method: 'post',
+        url: 'http://35.157.215.191/api/echo',
+        data: {
+          areaFilter: areaFilter,
+          timeFilter: timeFilter
         }
+      }).then(res => {
+      
+        console.log(res)
+      })
+      
+        }
+
       
      
         if((e.target.parentElement.parentElement.classList)[4] === 'areaDropdaownButton') return;
@@ -141,19 +176,25 @@ displayInitialCities(filteredArr){
       };
     
       handleTimeClose = (event,value) => {
+        let areaFilter = this.state.areaFilter
         event.preventDefault();
         event.stopPropagation();
 
-        if(value){
-         
-          if (this.timeAnchorEl.contains(event.target)) {
-          
-          }
-        }
      
         if((event.target.parentElement.parentElement.classList)[4] === 'timeDropdaownButton') return;
         if(value){
           this.setState({ timeFilter:value});
+          axios({
+            method: 'post',
+            url: 'http://35.157.215.191/api/echo',
+            data: {
+              areaFilter: areaFilter,
+              timeFilter: value
+            }
+          }).then(res => {
+            console.log(res)
+          })
+          
         }
         this.setState({ timeOpen: false });
       };
@@ -230,8 +271,33 @@ displayInitialCities(filteredArr){
       displayFilteredCities(displayedCities){
         this.setState({displayedCities:displayedCities,filteredCities:displayedCities})
       }
+
+      changeFilterTitle(){
+       
+        switch(this.props.filterBarSelection){
+          case "main":
+          this.setState({mainFilter:'ראשי'})
+          break;
+          case "voters":
+          this.setState({mainFilter:'בוחרים'})
+          break;
+          case "events":
+          this.setState({mainFilter:'אירועים'})
+          break;
+          case "activists":
+          this.setState({mainFilter:'פעילים'})
+          break;
+          case "users":
+          this.setState({mainFilter:'משתמשים'})
+          break;
+          default:
+          this.setState({mainFilter:'ראשי'})
+        }
+      }
+
    
     render(){
+      
   //      let displayedCities = this.state.displayedCities
   //    let dropDownCities = displayedCities.map(el => {
   //      if(el && el._id){
@@ -539,7 +605,7 @@ displayInitialCities(filteredArr){
        
         )
     }
-}
+  }
 
 
 

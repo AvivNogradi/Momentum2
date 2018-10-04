@@ -35,7 +35,7 @@ const styles = {
     }
 }
 
-class CustomizedTooltip extends Component {
+class ActivistsCustomizedTooltip extends Component {
     constructor(props){
         super(props)
 
@@ -46,7 +46,7 @@ class CustomizedTooltip extends Component {
     }
 
     componentWillReceiveProps(){
-
+        
         this.setState({label:this.props.label})
         let label = this.props.label
         if(label !== ''){
@@ -72,53 +72,34 @@ class CustomizedTooltip extends Component {
 
             <div style={styles.TooltipContent}>
             <div style={styles.ContentLine}>
-                <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].תומכים}</span>
+                <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].אירועים}</span>
                 <div>
-                <span>תומכים</span>
+                <span>אירועים</span>
                 <i className="material-icons" style={{color:'#33adff',fontSize:'10px',margin:'0 3px'}}>
                     fiber_manual_record
                 </i>
                 </div>
             </div>
             <div style={styles.ContentLine}>
-                <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].מתלבטים}</span>
+                <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].נרשמים}</span>
                 <div>
-                    <span>מתלבטים</span>
+                    <span>נרשמים לאירועים</span>
                     <i className="material-icons" style={{color:'#ff751a',fontSize:'10px',margin:'0 3px'}}>
                         fiber_manual_record
                     </i>
                 </div>
             </div>
             <div style={styles.ContentLine}>
-            <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].מתנגדים}</span>
+            <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].תומכיםחדשים}</span>
                <div>
-                <span>מתנגדים</span>
+                <span>תומכים חדשים</span>
                 <i className="material-icons" style={{color:'#00cc99',fontSize:'10px',margin:'0 3px'}}>
                     fiber_manual_record
                 </i>
               </div>
            
             </div>
-            <div style={styles.ContentLine}>
-            <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].חסר}</span>
-            <div>
-                <span>לא ידוע</span>
-                    <i className="material-icons" style={{color:'#ffcc00',fontSize:'10px',margin:'0 3px'}}>
-                        fiber_manual_record
-                    </i>
-            </div>
-            </div>
-            <div style={styles.ContentLine}>
-            <span style={{color:'grey', fontSize:'15px'}}>{displayData[0]&&displayData[0].פעילים}</span>
-            <div>
-                 <span>פעילים</span>
-                <i className="material-icons" style={{color:'#b366ff',fontSize:'10px',margin:'0 3px'}}>
-                    fiber_manual_record
-                </i>
-             </div>
-            
-           
-            </div>
+
             </div>
             :
             null
@@ -129,4 +110,4 @@ class CustomizedTooltip extends Component {
     }
 }
 
-export default CustomizedTooltip;
+export default ActivistsCustomizedTooltip;

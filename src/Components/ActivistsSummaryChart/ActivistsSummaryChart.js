@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip,ResponsiveContainer} from 'recharts';
-import CustomizedTooltip from '../CustomizedTooltip/CustomizedTooltip'
 import CustomizedTick from '../CustomizedTick/CustomizedTick'
 
-import apiData from '../../Assets/apiData.json'
+import activistsApiData from '../../Assets/activistsApiData.json'
+import ActivistsCustomizedTooltip from '../CustomizedTooltip/ActivistsCustomizedTooltip';
 
 const daysOfWeek = {
     0: 'יום ראשון',
@@ -40,12 +40,13 @@ const styles = {
 }
 
   
-class SummaryChart extends Component {
+class ActivistsSummaryChart extends Component {
     constructor(props){
         super(props)
 
         this.state = {
             apiData: [],
+            apiOriginalData:[],
             revisedDateAndDay:[],
         }
     }
@@ -54,9 +55,8 @@ class SummaryChart extends Component {
 
         //mock api data
         setTimeout(() => {
-          //  let FileContentArray= this.getJSONFileContent(__dirname +"apiData.json");
             
-             this.setState({apiData:apiData})
+             this.setState({apiData:activistsApiData,apiOriginalData:activistsApiData})
         }, 3000);
 
     }
@@ -84,24 +84,34 @@ class SummaryChart extends Component {
     }
 
     setDateAndDay(){
+        let alteredArray = [...this.state.apiOriginalData]
 
-        let alteredArray = this.state.apiData
-
-        alteredArray.map(item=>{
-            if(item.date.length > 8){
-                let revisedDate = parseInt(item.date, 10)
-                 let tempDate = new Date(revisedDate)
-                 item.day = this.getDayFromDate(tempDate)
-                 item.date = this.getDateFormat(tempDate)
+        for(let i = 0; i < alteredArray.length; i++){
+            if(alteredArray[i].date.length > 8){
+                let revisedDate = parseInt(alteredArray[i].date, 10)
+                let tempDate = new Date(revisedDate)
+                alteredArray[i].day = this.getDayFromDate(tempDate)
+                alteredArray[i].date = this.getDateFormat(tempDate)
             }
-           
-            item.תומכים = parseInt(item.תומכים, 10)
-            item.מתנגדים = parseInt(item.מתנגדים, 10)
-            item.פעילים = parseInt(item.פעילים, 10)
-            item.חסר = parseInt(item.חסר, 10)
-            item.מתלבטים = parseInt(item.מתלבטים, 10)
-            return item;
-        })
+          
+            alteredArray[i].רוציםלהתנדב = parseInt(alteredArray[i].רוציםלהתנדב, 10)
+            alteredArray[i].סופרפעילים = parseInt(alteredArray[i].סופרפעילים, 10)
+            alteredArray[i].פעילים = parseInt(alteredArray[i].פעילים, 10)
+            alteredArray[i].יעדפעילים = parseInt(alteredArray[i].יעדפעילים, 10)   
+        }
+
+        // alteredArray.map(item=>{
+        //     let revisedDate = parseInt(item.date)
+        //    // let revisedDate = item.date.replace('"','')
+        //     let tempDate = new Date(revisedDate)
+        //     item.day = this.getDayFromDate(tempDate)
+        //     item.date = this.getDateFormat(tempDate)
+        //     item.רוציםלהתנדב = parseInt(item.רוציםלהתנדב)
+        //     item.סופרפעילים = parseInt(item.סופרפעילים)
+        //     item.פעילים = parseInt(item.פעילים)
+        //     item.יעדפעילים = parseInt(item.יעדפעילים)
+        //     return item;
+        // })
 
      return alteredArray
     }
@@ -122,7 +132,7 @@ class SummaryChart extends Component {
     render(){
 
       let altered = this.setDateAndDay();
-    
+     
         return(
 
           <div className="chartAndSmallScreenTitleWrapper">
@@ -147,13 +157,11 @@ class SummaryChart extends Component {
                             padding={{left:0, right:130}}
                             />
                             <YAxis tickLine={false} axisLine={false} />
-                            <Tooltip content={<CustomizedTooltip data={altered} style={{width:'30px',color:'red',backgroundColor:'red'}}/>}/>
+                            <Tooltip content={<ActivistsCustomizedTooltip data={altered} style={{width:'30px',color:'red',backgroundColor:'red'}}/>}/>
                             <Legend verticalAlign="top" align="left" wrapperStyle={{top:"-8px"}}/>
-                            <Line type="monotone" dataKey="תומכים" stroke="#33adff" />
-                            <Line type="monotone" dataKey="מתלבטים" stroke="#ff751a" />
-                            <Line type="monotone" dataKey="מתנגדים" stroke="#00cc99" />
-                            <Line name="לא ידוע" type="monotone" dataKey="חסר" stroke="#ffcc00" />
-                            <Line type="monotone" dataKey="פעילים" stroke="#b366ff" />  
+                            <Line type="monotone" dataKey="סופרפעילים" stroke="#33adff" name="סופר פעילים"/>
+                            <Line type="monotone" dataKey="פעילים" stroke="#ff751a" />
+                            <Line type="monotone" dataKey="רוציםלהתנדב" stroke="#00cc99" name="רוצים להתנדב"/>
                         </LineChart>
                 </ResponsiveContainer>
             
@@ -165,4 +173,4 @@ class SummaryChart extends Component {
     
 }
 
-export default SummaryChart;
+export default ActivistsSummaryChart;

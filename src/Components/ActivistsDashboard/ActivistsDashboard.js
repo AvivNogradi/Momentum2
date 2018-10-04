@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import FilterBar from '../FilterBar/FilterBar'
 import OverViewContainer from '../OverViewContainer/OverViewContainer'
-import SummaryChart from '../SummaryChart/SummaryChart'
-import GeoTable from '../GeoTable/GeoTable'
+import ActivistsSummaryChart from '../ActivistsSummaryChart/ActivistsSummaryChart'
+import ActivistsGeoTable from '../ActivistsGeoTable/ActivistsGeoTable'
 
 const styles = {
     AppContainer: {
@@ -13,7 +13,7 @@ const styles = {
     },
     ContentContainer: {
         backgroundColor: '#f2f2f2',
-       
+       height:'100%'
     },
     OverViewContainersContainer: {
         display: 'flex',
@@ -23,13 +23,21 @@ const styles = {
         margin:'0 auto',
         marginTop: '30px'
     },
+    narrowOverViewContainersContainer: {
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        justifyContent:'space-between',
+        width:'60%',
+        margin:'0 auto',
+        marginTop: '30px'
+    },
     FilterBar: {
         width: '80%',
         margin: '0 auto',
         zIndex:200,
     }
 }
-class Dashboard extends Component {
+class ActivistsDashboard extends Component {
     constructor(props){
         super(props)
 
@@ -56,45 +64,31 @@ class Dashboard extends Component {
             </div>
             
               <div style={styles.ContentContainer}>
-                <div className="overViewContainersWrapper" style={styles.OverViewContainersContainer}>
+                <div className="overViewContainersWrapper" style={styles.narrowOverViewContainersContainer}>
                 <OverViewContainer
-                title="פעילים"
-                numbers="30500"
-                changes="-150"
-                style={{borderRight:'3px solid #b366ff'}}
-                titleColor='#b366ff'
-                />
-                <OverViewContainer
-                title="תומכים"
-                numbers="301200"
-                changes="2500"
+                title="סופר פעילים"
+                numbers="7000"
+                changes="95"
                 style={{borderRight:'3px solid #33adff'}}
                 titleColor='#33adff'
                 />
                 <OverViewContainer
-                title="מתנגדים"
-                numbers="15169"
-                changes="3600"
-                style={{borderRight:'3px solid #00cc99'}}
-                titleColor='#00cc99'
-                />
-                <OverViewContainer
-                title="מתלבטים"
-                numbers="140700"
-                changes="-2100"
+                title="פעילים"
+                numbers="13655"
+                changes="167"
                 style={{borderRight:'3px solid #ff751a'}}
                 titleColor='#ff751a'
                 />
                 <OverViewContainer
-                title="לא ידוע"
-                numbers="800500"
-                changes="6000"
-                style={{borderRight:'3px solid #ffcc00'}}
-                titleColor='#ffcc00'
+                title="רוצים להתנדב"
+                numbers="4256"
+                changes="97"
+                style={{borderRight:'3px solid #00cc99'}}
+                titleColor='#00cc99'
                 />
                 </div>
-                  <SummaryChart />
-                  <GeoTable />
+                  <ActivistsSummaryChart />
+                  <ActivistsGeoTable />
                 </div>
 
             </div>
@@ -102,4 +96,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default ActivistsDashboard;

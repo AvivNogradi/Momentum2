@@ -17,36 +17,27 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
 
-const apiTableData = require('../../Assets/apiTableData.json'); 
+const eventsApiData = require('../../Assets/eventsApiData.json'); 
 const myFilter = require('../../Assets/filter.png');
 
+
 let id = 0
-function createData(ישוב, אזור, מתנגדים, מתלבטים, תומכים, מטרה) {
-
-id += 1 
-  תומכים = parseInt(תומכים, 10)
-  מטרה = parseInt(מטרה, 10)
-  let supporters = תומכים
-  let target = מטרה
-
-    let paar = 0;
-    if(target > supporters){
-        paar = (target - supporters) / target 
-        paar = Math.round(paar * 100)
-    }  
-
-  let פער = paar
-  return { ישוב, אזור, מתנגדים, מתלבטים, תומכים, מטרה, פער, id};
+function createData(תאריך, נואם, ישוב, אזור, נרשמים, תומכיםחדשים) {
+    id += 1
+  נרשמים = parseInt(נרשמים, 10)
+  תומכיםחדשים = parseInt(תומכיםחדשים, 10)
+  
+  
+  return {תאריך, נואם, ישוב, אזור, נרשמים, תומכיםחדשים, id};
 }
 
 const data = [
+    { id: 'תאריך', numeric: true, disablePadding: true, label: 'תאריך' },
+    { id: 'נואם', numeric: true, disablePadding: true, label: 'נואם' },
     { id: 'ישוב', numeric: true, disablePadding: true, label: 'ישוב' },
     { id: 'אזור', numeric: true, disablePadding: true, label: 'אזור' },
-    { id: 'מתנגדים', numeric: true, disablePadding: true, label: 'מתנגדים' },
-    { id: 'מתלבטים', numeric: true, disablePadding: true, label: 'מתלבטים' },
-    { id: 'תומכים', numeric: true, disablePadding: true, label: 'תומכים' },
-    { id: 'מטרה', numeric: true, disablePadding: true, label: 'מטרה' },
-    { id: 'פער', numeric: true, disablePadding: true, label: 'פער' },
+    { id: 'נרשמים', numeric: true, disablePadding: true, label: 'נרשמים' },
+    { id: 'תומכיםחדשים', numeric: true, disablePadding: true, label: 'תומכים חדשים' },
   ];
 
 
@@ -98,7 +89,7 @@ const styles = {
 }
 
 
-class GeoTable extends Component {
+class EventsGeoTable extends Component {
     constructor(props){
         super(props)
 
@@ -108,14 +99,14 @@ class GeoTable extends Component {
             order: 'asc',
             orderBy: 'ישוב',
             selected: [],
-            apiTableData:[],
+            eventsApiData:[],
         }
     }
 
     componentWillMount(){
-        let tempApiDataTable = this.handleApiJsonData(apiTableData);
+        let tempEventsApiData = this.handleApiJsonData(eventsApiData);
       setTimeout(() => {
-        this.setState({apiTableData:tempApiDataTable})
+        this.setState({eventsApiData:tempEventsApiData})
       })
         
     }
@@ -173,21 +164,21 @@ class GeoTable extends Component {
 
       dataForExcel(){
           let newDataArray = [];
-          for(let i = 0;i < this.state.apiTableData.length; i++){
-             newDataArray.push(createData(this.state.apiTableData[i]))
+          for(let i = 0;i < this.state.eventsApiData.length; i++){
+             newDataArray.push(createData(this.state.eventsApiData[i]))
           }
           return newDataArray;
       }
 
       areaColorFiller(area){
-         let areaSupporters = 0;
-         let areaTarget = 0;
+         let areaActivists = 0;
+         let areaActivistsTarget = 0;
 
           let gap = 0
-          for(let i = 0; i < this.state.apiTableData.length; i++){
-            if(this.state.apiTableData[i].אזור === area){
-                areaSupporters += this.state.apiTableData[i].תומכים
-                areaTarget += this.state.apiTableData[i].מטרה
+          for(let i = 0; i < this.state.eventsApiData.length; i++){
+            if(this.state.eventsApiData[i].אזור === area){
+                areaActivists += this.state.eventsApiData[i].פעילים
+                areaActivistsTarget += this.state.eventsApiData[i].יעדפעילים
                 // if(this.state.apiTableData[i].מטרה > rows[i].תומכים){
                 //     gap -= ((this.state.apiTableData[i].מטרה - this.state.apiTableData[i].תומכים) / this.state.apiTableData[i].מטרה) *100
                 // } 
@@ -197,8 +188,8 @@ class GeoTable extends Component {
                 // }
             }
           }
-         if(areaSupporters < areaTarget){
-             gap = (areaTarget - areaSupporters) / areaTarget *100
+         if(areaActivists < areaActivistsTarget){
+             gap = (areaActivistsTarget - areaActivists) / areaActivistsTarget *100
          }
           if(gap === 0){
               return 'green'
@@ -216,12 +207,29 @@ class GeoTable extends Component {
           
 
           JsonFile.forEach(line => {
-        
-              returnedFixedData.push(createData(line.city, line.area, line.מתנגדים, line.מתלבטים, line.תומכים, line.מטרה))
+               let tempDate = new Date(parseInt(line.date, 10))
+               tempDate = this.getDateFormat(tempDate)
+               
+              returnedFixedData.push(createData(tempDate, line.נואם, line.ישוב, line.אזור, line.נרשמים, line.תומכיםחדשים))
+              
           })
-        
          return returnedFixedData;
       }
+
+      getDateFormat(date){
+     
+        if(date.toString().length > 8){
+          let day = date.getDate();
+          let month = date.getMonth();
+          let tempYear = date.getFullYear().toString();
+          let year = tempYear.substring(2,4)
+          let newDate = `${day}.${month}.${year}`
+         
+  
+          return newDate
+        }
+    }
+        
     render(){
     
 
@@ -243,7 +251,7 @@ class GeoTable extends Component {
                             <FontAwesomeIcon icon="filter" style={{color:'white'}}/>
                         </div>
                         <div style={{display:'flex'}}>
-                            <CSVLink data={this.state.apiTableData}>
+                            <CSVLink data={this.state.eventsApiData}>
                             <i className="material-icons" style={{margin:'0 10px',cursor:'pointer',color:'white'}}>
                                 save_alt
                                 </i>
@@ -263,7 +271,7 @@ class GeoTable extends Component {
                     <img src={myFilter} style={{cursor:'pointer',display:'flex'}} alt="Filter"/>
                   </div>
                   <div style={{display:'flex'}}>
-                  <CSVLink data={this.state.apiTableData}>
+                  <CSVLink data={this.state.eventsApiData}>
                   <i className="material-icons" style={{margin:'0 10px',cursor:'pointer',color:'black'}}>
                     save_alt
                     </i>
@@ -311,25 +319,19 @@ class GeoTable extends Component {
             </TableRow>
           </TableHead>
         <TableBody>
-        {this.stableSort(this.state.apiTableData, this.getSorting(this.state.order, this.state.orderBy)).slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map(row => {
-            let modifiedPercentStyle = {}
-            let range = row.פער
-             
-            range === 0 ?  modifiedPercentStyle = {color:'green'} : range > 0 &&  range < 31 ? modifiedPercentStyle = {color:'orange'} :
-           modifiedPercentStyle = {color:'red'} 
-           
+        {this.stableSort(this.state.eventsApiData, this.getSorting(this.state.order, this.state.orderBy)).slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map(row => {
+        
         
             return (
               <TableRow key={row.id}>
-                <TableCell  style={{textAlign:'right'}} component="th" scope="row" sortDirection={this.state.orderBy === row.id ? this.state.order : false}>
-                  {row.ישוב}
+                <TableCell key={row.id} style={{textAlign:'right'}} component="th" scope="row" sortDirection={this.state.orderBy === row.id ? this.state.order : false}>
+                  {row.תאריך}
                 </TableCell>
-                <TableCell  style={{textAlign:'right'}}>{row.אזור}</TableCell>
-                <TableCell  numeric>{row.מתנגדים}</TableCell>
-                <TableCell  numeric>{row.מתלבטים}</TableCell>
-                <TableCell  numeric>{row.תומכים}</TableCell>
-                <TableCell  numeric>{row.מטרה}</TableCell>
-                <TableCell  numeric style={modifiedPercentStyle}>{row.פער}%</TableCell>
+                <TableCell  style={{textAlign:'right'}}>{row.נואם}</TableCell>
+                <TableCell  numeric>{row.ישוב}</TableCell>
+                <TableCell  numeric>{row.אזור}</TableCell>
+                <TableCell  numeric>{row.נרשמים}</TableCell>
+                <TableCell  numeric name="תומכים חדשים">{row.תומכיםחדשים}</TableCell>
               </TableRow>
             );
           })}
@@ -342,7 +344,7 @@ class GeoTable extends Component {
                   labelRowsPerPage={'שורות בעמוד:'}
                   style={{marginLeft:0, paddingLeft:0}}
                   colSpan={7}
-                  count={this.state.apiTableData.length}
+                  count={this.state.eventsApiData.length}
                   rowsPerPage={this.state.rowsPerPage}
                   page={this.state.page}
                   onChangePage={this.handleChangePage}
@@ -383,4 +385,4 @@ class GeoTable extends Component {
     }
 }
 
-export default GeoTable;
+export default EventsGeoTable;

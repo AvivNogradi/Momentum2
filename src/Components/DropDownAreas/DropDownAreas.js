@@ -37,7 +37,6 @@ class DropDownAreas extends Component {
 
             if(testedArea.name === this.props.areaFilter || testedArea.name === this.props.cityChosen.areaName) return true;
 
-        
         })
 
 
@@ -54,6 +53,7 @@ class DropDownAreas extends Component {
               {el.name}
               </MenuItem>
             }
+            return null
          });
         
         return dropDownAreas

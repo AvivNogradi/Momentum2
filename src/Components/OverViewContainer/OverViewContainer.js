@@ -24,6 +24,11 @@ const styles = {
     display: 'flex',
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
+    },
+    changes: {
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center'
     }
   };
 
@@ -66,7 +71,7 @@ class OverViewContainer extends Component {
                 </div>
                
                 </div>
-                <div> 
+                <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}> 
                 <div style={styles.changes}>
                 {
                     this.props.changes < 0 ?

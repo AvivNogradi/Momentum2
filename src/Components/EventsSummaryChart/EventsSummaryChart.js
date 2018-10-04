@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip,ResponsiveContainer} from 'recharts';
-import CustomizedTooltip from '../CustomizedTooltip/CustomizedTooltip'
 import CustomizedTick from '../CustomizedTick/CustomizedTick'
 
-import apiData from '../../Assets/apiData.json'
+import eventsApiData from '../../Assets/eventsApiData.json'
+import EventsCustomizedTooltip from '../CustomizedTooltip/EventsCustomizedTooltip';
 
 const daysOfWeek = {
     0: 'יום ראשון',
@@ -56,7 +56,7 @@ class SummaryChart extends Component {
         setTimeout(() => {
           //  let FileContentArray= this.getJSONFileContent(__dirname +"apiData.json");
             
-             this.setState({apiData:apiData})
+             this.setState({apiData:eventsApiData})
         }, 3000);
 
     }
@@ -94,12 +94,9 @@ class SummaryChart extends Component {
                  item.day = this.getDayFromDate(tempDate)
                  item.date = this.getDateFormat(tempDate)
             }
-           
-            item.תומכים = parseInt(item.תומכים, 10)
-            item.מתנגדים = parseInt(item.מתנגדים, 10)
-            item.פעילים = parseInt(item.פעילים, 10)
-            item.חסר = parseInt(item.חסר, 10)
-            item.מתלבטים = parseInt(item.מתלבטים, 10)
+            item.אירועים = parseInt(item.אירועים, 10)
+            item.נרשמים = parseInt(item.נרשמים, 10)
+            item.תומכיםחדשים = parseInt(item.תומכיםחדשים, 10)
             return item;
         })
 
@@ -122,7 +119,6 @@ class SummaryChart extends Component {
     render(){
 
       let altered = this.setDateAndDay();
-    
         return(
 
           <div className="chartAndSmallScreenTitleWrapper">
@@ -135,7 +131,7 @@ class SummaryChart extends Component {
                 </div>
             
                 <ResponsiveContainer minWidth={950} height="90%" style={{paddingTop:"10px"}}>
-                    <LineChart  data={altered}
+                    <LineChart data={altered}
                             margin={{ top: 15, right: 0, left: 20, bottom: 15 }}>
                             <CartesianGrid  vertical={false}/>
                             <XAxis
@@ -147,13 +143,11 @@ class SummaryChart extends Component {
                             padding={{left:0, right:130}}
                             />
                             <YAxis tickLine={false} axisLine={false} />
-                            <Tooltip content={<CustomizedTooltip data={altered} style={{width:'30px',color:'red',backgroundColor:'red'}}/>}/>
+                            <Tooltip content={<EventsCustomizedTooltip data={altered} style={{width:'30px',color:'red',backgroundColor:'red'}}/>}/>
                             <Legend verticalAlign="top" align="left" wrapperStyle={{top:"-8px"}}/>
-                            <Line type="monotone" dataKey="תומכים" stroke="#33adff" />
-                            <Line type="monotone" dataKey="מתלבטים" stroke="#ff751a" />
-                            <Line type="monotone" dataKey="מתנגדים" stroke="#00cc99" />
-                            <Line name="לא ידוע" type="monotone" dataKey="חסר" stroke="#ffcc00" />
-                            <Line type="monotone" dataKey="פעילים" stroke="#b366ff" />  
+                            <Line type="monotone" dataKey="אירועים" stroke="#33adff" />
+                            <Line type="monotone" dataKey="נרשמים" stroke="#ff751a" name="נרשמים לאירועים"/>
+                            <Line type="monotone" dataKey="תומכיםחדשים" stroke="#00cc99" name="תומכים חדשים מאירועים"/>
                         </LineChart>
                 </ResponsiveContainer>
             
